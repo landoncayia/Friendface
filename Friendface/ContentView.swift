@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ContentView: View {
-    @ObservedObject var userList = Users(users: [User]())
+    @ObservedObject var userList = UserList(users: [User]())
     
     var body: some View {
         NavigationView {
