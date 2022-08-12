@@ -13,19 +13,23 @@ struct ContentView: View {
     var body: some View {
         NavigationView {
             List(users) { user in
-                HStack {
-                    VStack(alignment: .leading, spacing: 3) {
-                        Text(user.name)
-                            .font(.headline)
+                NavigationLink {
+                    UserDetailView(user: user)
+                } label: {
+                    HStack {
+                        VStack(alignment: .leading, spacing: 3) {
+                            Text(user.name)
+                                .font(.headline)
+                            
+                            Text("Registered in \(user.registered, format: .dateTime.year())")
+                                .font(.subheadline)
+                        }
                         
-                        Text("Registered in \(user.registered, format: .dateTime.year())")
-                            .font(.subheadline)
+                        Spacer()
+                        
+                        Image(systemName: "circle.fill")
+                            .foregroundColor(user.isActive ? .green : .gray)
                     }
-                    
-                    Spacer()
-                    
-                    Image(systemName: "circle.fill")
-                        .foregroundColor(user.isActive ? .green : .gray)
                 }
             }
             .task {
