@@ -18,6 +18,5 @@ struct User: Codable, Identifiable {
     var about: String
     var registered: Date
     var tags: [String]
-    // Need to write a Friend struct first
-//    let friends: [Friend]
+    var friends: [Friend]
 }
