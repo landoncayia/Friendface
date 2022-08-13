@@ -7,6 +7,7 @@
 
 import Foundation
 
+/// A struct that represents an instance of a user.
 struct User: Codable, Identifiable {
     var id: String
     var isActive: Bool

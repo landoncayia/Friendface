@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+/// A view that shows details about a user's profile.
 struct UserDetailView: View {
     let user: User
     

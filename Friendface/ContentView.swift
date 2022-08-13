@@ -41,6 +41,7 @@ struct ContentView: View {
         }
     }
     
+    /// A function that downloads user JSON data from the internet and decodes it into Swift objects.
     func loadData() async {
         guard let url = URL(string: "https://www.hackingwithswift.com/samples/friendface.json") else {
             print("Invalid URL")

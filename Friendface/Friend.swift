@@ -7,6 +7,7 @@
 
 import Foundation
 
+/// A struct that represents one of a user's friends.
 struct Friend: Codable, Identifiable {
     var id: String
     var name: String
