@@ -9,13 +9,13 @@ import SwiftUI
 
 /// A view that shows details about a user's profile.
 struct UserDetailView: View {
-    let user: User
+    let user: CachedUser
     
     var body: some View {
         ScrollView {
             VStack(alignment: .leading) {
                 HStack {
-                    Text(user.name)
+                    Text(user.wrappedName)
                         .font(.title.weight(.semibold))
                         .padding(.bottom, 1)
                     
@@ -27,9 +27,9 @@ struct UserDetailView: View {
                 
                 Text("Age: \(user.age)")
                 
-                Text("Works at \(user.company)")
+                Text("Works at \(user.wrappedCompany)")
                 
-                Text("User since \(user.registered, format: .dateTime.year())")
+                Text("User since \(user.wrappedRegistered, format: .dateTime.year())")
                 
                 Divider()
                 
@@ -37,19 +37,13 @@ struct UserDetailView: View {
                     .font(.title2)
                     .padding(.bottom, 1)
                 
-                ForEach(user.friends) { friend in
-                    Text(friend.name)
+                ForEach(user.friendsArray) { friend in
+                    Text(friend.wrappedName)
                 }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding()
         }
         .navigationBarTitleDisplayMode(.inline)
-    }
-}
-
-struct UserDetailView_Previews: PreviewProvider {
-    static var previews: some View {
-        UserDetailView(user: User(id: "123456", isActive: false, name: "James Jenkins", age: 34, company: "Apple", email: "jjenkins@apple.com", address: "42 California Rd, Cupertino, CA 94024", about: "I have been a dedicated iOS developer since the beginning.", registered: Date(), tags: ["happy", "booknerd"], friends: []))
     }
 }

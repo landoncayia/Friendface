@@ -8,20 +8,23 @@
 import SwiftUI
 
 struct ContentView: View {
+    @Environment(\.managedObjectContext) var moc
+    @FetchRequest(sortDescriptors: [SortDescriptor(\.name)]) var cachedUsers: FetchedResults<CachedUser>
+    
     @State private var users = [User]()
     
     var body: some View {
         NavigationView {
-            List(users) { user in
+            List(cachedUsers) { user in
                 NavigationLink {
                     UserDetailView(user: user)
                 } label: {
                     HStack {
                         VStack(alignment: .leading, spacing: 3) {
-                            Text(user.name)
+                            Text(user.wrappedName)
                                 .font(.headline)
                             
-                            Text("Registered in \(user.registered, format: .dateTime.year())")
+                            Text("Registered in \(user.wrappedRegistered, format: .dateTime.year())")
                                 .font(.subheadline)
                         }
                         
@@ -58,6 +61,33 @@ struct ContentView: View {
             }
         } catch {
             print("Invalid data")
+        }
+        
+        // Prevent Core Data from updating at the same time as SwiftUI updates its interface
+        await MainActor.run {
+            for user in users {
+                let cachedUser = CachedUser(context: moc)
+                cachedUser.id = user.id
+                cachedUser.isActive = user.isActive
+                cachedUser.name = user.name
+                cachedUser.age = Int16(user.age)
+                cachedUser.company = user.company
+                cachedUser.email = user.email
+                cachedUser.address = user.address
+                cachedUser.about = user.about
+                cachedUser.registered = user.registered
+                cachedUser.tags = user.tags.joined(separator: ",")
+                for friend in user.friends {
+                    let cachedFriend = CachedFriend(context: moc)
+                    cachedFriend.id = friend.id
+                    cachedFriend.name = friend.name
+                    cachedUser.addToFriends(cachedFriend)
+                }
+                
+                if moc.hasChanges {
+                    try? moc.save()
+                }
+            }
         }
     }
 }
