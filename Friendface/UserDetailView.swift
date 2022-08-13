@@ -40,6 +40,16 @@ struct UserDetailView: View {
                 ForEach(user.friendsArray) { friend in
                     Text(friend.wrappedName)
                 }
+                
+                Divider()
+                
+                Text("Tags")
+                    .font(.title2)
+                    .padding(.bottom, 1)
+                
+                ForEach(user.wrappedTags.components(separatedBy: ","), id: \.self) { tag in
+                    Text(tag)
+                }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding()
